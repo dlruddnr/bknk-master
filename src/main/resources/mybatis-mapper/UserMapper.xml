@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.bknk.user.UserMapper">
+
+    <!--회원가입 부분    -->
+    <insert id="join">
+        INSERT INTO t_user
+            (email, pw, nm, nick, authCd, provider)
+        VALUES
+            (#{email}, #{pw}, #{nm}, #{nick}, #{authCd}, #{provider})
+    </insert>
+
+    <!--계정 구독시-->
+    <insert id="subscriptions">
+        INSERT INTO t_user_subscribe
+            (feedIuser, subscriberIuser)
+        VALUES
+            (#{feedIUser}, #{loginIuser})
+    </insert>
+
+    <!--유저 정보가 인증되었는지 확인-->
+    <select id="selUser" resultType="UserEntity">
+        SELECT * FROM t_user
+        WHERE email = #{email}
+          AND provider = #{provider}
+          AND authCd IS NULL
+    </select>
+
+<!--구독한 사람의 정보와 해당 게시글 계정 구독 여부-->
+    <select id="selFeedUser" resultType="UserDomain">
+        SELECT iuser, nick, email, mainProfile, regdt
+        ,(SELECT COUNT(feedIuser) FROM t_user_subscribe WHERE feedIuser = #{feedIuser} AND subscriberIuser = #{loginIuser}) AS subscriber
+        FROM t_user
+        WHERE iuser = #{feedIuser}
+    </select>
+
+    <!--유저정보 불러오기-->
+    <select id="selLocalUser" resultType="UserEntity">
+        SELECT * FROM t_user
+        WHERE email = #{email}
+          AND provider = #{provider}
+    </select>
+
+    <!--사용자 확인?-->
+    <select id="chkNick" resultType="UserEntity">
+        SELECT nick, iuser FROM t_user
+        WHERE
+            <if test="iuser !=null and iuser != ''">
+                iuser != #{iuser} AND
+            </if>
+        nick = #{nick}
+    </select>
+<!--인증처리 부분-->
+    <update id="auth">
+        UPDATE t_user
+        SET authCd = null
+        WHERE email = #{email} AND authCd = #{authCd}
+    </update>
+    <update id="updUser">
+        UPDATE t_user
+        <set>
+            <if test="mainProfile != null ">
+                mainProfile = #{mainProfile},
+            </if>
+            <if test="pw != null">
+                pw = #{pw},
+            </if>
+            <if test="nm != null and nm != ''">
+                nm = #{nm},
+            </if>
+            <if test="nick != null and nick != ''">
+                nick = #{nick},
+            </if>
+            <if test="gender != ''">
+                gender = #{gender},
+            </if>
+            <if test="birthY != ''">
+                birthY = #{birthY},
+            </if>
+            <if test="birthM != ''">
+                birthM = #{birthM},
+            </if>
+            <if test="birthD != ''">
+                birthD = #{birthD},
+            </if>
+            <if test="tel != null">
+                tel = #{tel},
+            </if>
+        </set>
+        WHERE iuser = #{iuser}
+    </update>
+</mapper>

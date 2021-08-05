@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.bknk.board.BoardMapper">
+    <!--인기 게시글 리스트 불러오기 9개만-->
+    <select id="selHotList" resultType="com.koreait.bknk.board.model.BoardDTO">
+        SELECT A.*, B.nick as writer from t_board A
+        INNER JOIN t_user B
+        ON A.iuser=B.iuser
+        LEFT JOIN t_board_img C
+        ON A.iboard=C.iboard
+        GROUP BY A.iboard
+        ORDER BY A.cntFav DESC, A.iboard DESC
+        limit 9
+    </select>
+    <!--좋아요 한 게시글-->
+    <select id="selFavList" resultType="com.koreait.bknk.board.model.BoardDAO">
+        SELECT B.iboard, B.iuser,E.nick AS writer ,B.title, B.cntFav, B.season, C.img_addr FROM t_board_fav A
+        INNER JOIN t_board B
+        ON A.iboard=B.iboard
+        INNER JOIN t_user E
+        ON B.iuser=E.iuser
+        LEFT JOIN t_board_img C
+        ON A.iboard=C.iboard
+        WHERE A.iuser=${iuser}
+        GROUP BY B.iboard
+        ORDER BY iboard desc
+        LIMIT ${startPage},9;
+    </select>
+    <!--내 feed 리스트 불러오기-->
+    <select id="selMyFeedList" resultType="com.koreait.bknk.board.model.BoardDTO">
+        SELECT *
+        FROM (SELECT A.*, B.nick, C.img_addr FROM t_board A
+        INNER JOIN t_user B
+        ON A.iuser=B.iuser
+        LEFT JOIN t_board_img C
+        ON A.iboard=C.iboard
+        WHERE A.iuser=${iuser})D
+        GROUP BY D.iboard
+        ORDER BY D.iboard desc
+            LIMIT ${startPage},9
+    </select>
+
+    <!--내 feed 갯수 가져오기-->
+    <select id="selFeedPage1" resultType="integer">
+        select ifnull(C, 0) from (SELECT CEIL(COUNT(iboard)/${limit}) C FROM t_board
+                                  WHERE iuser=${iuser}) B
+    </select>
+    <!--내가 좋아요한 게시글 수-->
+    <select id="selFeedPage2" resultType="integer">
+        select ifnull(C, 0) from (SELECT CEIL(COUNT(iboard)/${limit}) as C FROM t_board_fav
+                                  WHERE iuser=${iuser}) B
+    </select>
+<!--        검색 후 게시글 수-->
+    <select id="selFeedPage3" resultType="integer">
+        select ifnull(C, 0) from (SELECT CEIL(COUNT(iboard)/${limit}) as C FROM t_board A
+        inner join t_user B
+        on A.iuser=B.iuser
+        <if test="searchType==1">
+            WHERE A.title REGEXP #{searchWord}
+        </if>
+        <if test="searchType==2">
+            WHERE A.ctnt REGEXP #{searchWord}
+        </if>
+        <if test="searchType==3">
+            WHERE A.title REGEXP #{searchWord} or A.ctnt REGEXP #{searchWord}
+        </if>
+        <if test="searchType==4">
+            WHERE B.nick REGEXP #{searchWord}
+        </if>) D
+    </select>
+    <!--검색 후 결과 가져오기-->
+    <select id="selSearchResult" resultType="com.koreait.bknk.board.model.BoardDTO">
+        SELECT A.iboard, A.iuser, A.title, A.place, A.cntFav, B.nick AS writer, C.img_addr
+        FROM t_board A
+        INNER JOIN t_user B
+        ON A.iuser=B.iuser
+        LEFT JOIN t_board_img C
+        ON A.iboard=C.iboard
+        <if test="searchType==1">
+            WHERE A.title REGEXP #{searchWord}
+        </if>
+        <if test="searchType==2">
+            WHERE A.ctnt REGEXP #{searchWord}
+        </if>
+        <if test="searchType==3">
+            WHERE A.title REGEXP #{searchWord} and A.ctnt REGEXP #{searchWord}
+        </if>
+        <if test="searchType==4">
+            WHERE B.nick REGEXP #{searchWord}
+        </if>
+        GROUP BY A.iboard
+        ORDER BY A.iboard desc
+        limit ${startPage}, 9
+    </select>
+</mapper>

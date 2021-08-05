@@ -1,0 +1,14 @@
+#joinFrm input {
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+}
+
+.logoCont{ padding-top: 50px; padding-bottom: 15px;}
+/*.logo { font-size: 58px; color: #707070; }*/
+.logo { font-size: 58px;
+    background: linear-gradient(to right, #ff4692, #84e7f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="basicLayout">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="/css/board/reg.css">
+</th:block>
+
+<th:block layout:fragment="js">
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script defer src="/js/board/reg.js"></script>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div>
+        <div id="infoSection" th:data-iuser="1" th:data-iboard="${result[0].iboard}">user 정보 존재 구간</div>
+        <h1>detail</h1>
+        <div>만약 작성자가 들어오면 수정버튼 생성하자</div>
+        <div th:text="제목 + ${result[0].title}"></div>
+        <div th:text="작성자닉네임 + ${result[0].writer}"></div>
+        <div th:text="내용 + ${result[0].ctnt}"></div>
+        <div th:text="지역구분 + ${result[0].region}"></div>
+        <div th:text="장소명 + ${result[0].place}"></div>
+        <div th:text="위치X + ${result[0].location_X}"></div>
+        <div th:text="위치Y + ${result[0].location_Y}"></div>
+        <div th:text="좋아요 + ${result[0].cntFav}"></div>
+        <div th:text="계절 + ${result[0].season}"></div>
+    </div>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" th:each="img : ${result}">
+                <img th:src="@{/pic/post/{iboard}/{img_addr}(iboard=${img.iboard} ,img_addr=${img.img_addr})}">
+            </div>
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+    </div>
+
+    <div id="thumbs-up" th:data-myfav="${chFav}" th:data-favcount="${result[0].cntFav}">
+
+        <!--        <div th:if="${chFav.countFav} eq 0"><i th:text="${result[0].cntFav}" class="far fa-thumbs-up"></i></div>-->
+        <!--        <div th:unless="${chFav.countFav} eq 0"><i th:text="${result[0].cntFav}" class="fas fa-thumbs-up"></i></div>-->
+    </div>
+
+    <div><button type="button" onclick="delClassHide()">위치보기</button></div>
+
+    <div id="map_modal" class="openModal" th:data-x="${result[0].location_X}" th:data-y="${result[0].location_Y}">
+        <div class="map_wrap">
+            <div class="modal_close_parent"><i class="modal_close fas fa-times"></i></div>
+            <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+            <div class="hAddr">
+                <span class="title">지도중심기준 행정동 주소정보</span>
+                <span id="centerAddr"></span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <form name="cmtWindow" onsubmit="return uploadCmt()">
+            <input name="cmt" type="text" placeholder="댓글을 입력하시오">
+            <input type="submit" value="댓글작성">
+        </form>
+    </div>
+    <div id="cmtContainer">
+
+    </div>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=50b42248976a05efd824c09d0d575eab&libraries=services"></script>
+
+
+        <form name="modCmtForm" onsubmit="return modCmt()" class="hide">
+            <textarea name="cmt"></textarea>
+            <input type="hidden" name="icmt">
+            <input type="submit" value="수정하기">
+        </form>
+
+</th:block>
+
+</html>

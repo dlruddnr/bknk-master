@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+<header th:fragment="header">
+    <span id="globalConst" sec:authorize="isAuthenticated()" th:with="auth=${#authentication.getPrincipal().getUser()}"
+          th:data-iuser="${auth.iuser}", th:data-writer=${auth.nick}></span>
+    <nav>
+        <div class="header__left">
+            <a th:href="@{/}">
+                <i class="fas fa-bus"> BKNK</i>
+            </a>
+        </div>
+
+        <div class="header__center">
+            <ul>
+                <li>
+                    <form name="searchForm" action="/b/search">
+                        <select name="searchType">
+                            <option value="1">제목</option>
+                            <option value="2">내용</option>
+                            <option value="3">제목+내용</option>
+                            <option value="4">작성자</option>
+                        </select>
+                        <input id="searchWindow1" type="text" name="searchWord" placeholder="검색어를 입력해주세요">
+                        <button typ="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </li>
+                <li>
+                    <a href="/b/hot">인기 게시글</a>
+                </li>
+                <li>
+                    <a href="#">map</a>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="header__right">
+            <ul class="menus" sec:authorize="isAnonymous()">
+                <li><a th:href="@{/user/login}">로그인</a></li>
+                <li><a th:href="@{/user/join}">회원가입</a></li>
+            </ul>
+            <ul class="menus" sec:authorize="isAuthenticated()" th:with="auth=${#authentication.getPrincipal().getUser()}">
+                <li class="profileImgBtn">
+                    <img th:unless="${auth.mainProfile == null || auth.mainProfile == ''}" class="pointer mainProfileImg profile wh30" th:src="@{/pic/user/{iuser}/{img}(iuser=${auth.iuser},img=${auth.mainProfile})}">
+                    <img th:if="${auth.mainProfile == null || auth.mainProfile == ''}" class="pointer mainProfileImg profile wh30" th:src="@{/img/profile.png}">
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+    <div class="dropdown_menu">
+        <ul class="menus" sec:authorize="isAuthenticated()" th:with="auth=${#authentication.getPrincipal().getUser()}">
+            <li>
+                <a th:href="@{/{nick}/(nick=${auth.nick})}" >
+                        <span>
+                            <span th:text="${auth.nick}"></span>
+                        </span>
+                </a>
+            </li>
+            <!--                <li><a th:href="@{/}"><i class="fas fa-bell"></i></a></li>-->
+            <li>
+                <a th:href="@{/user/edit}">
+                    <img th:unless="${auth.mainProfile == null || auth.mainProfile == ''}" class="mainProfileImg profile wh30" th:src="@{/pic/user/{iuser}/{img}(iuser=${auth.iuser},img=${auth.mainProfile})}">
+                    <img th:if="${auth.mainProfile == null || auth.mainProfile == ''}" class="mainProfileImg profile wh30" th:src="@{/img/profile.png}">
+                </a>
+            </li>
+            <!--                <li><a th:href="@{/{nick}(nick=${auth.nick})}">내 feed</a></li>-->
+            <li><a th:href="@{/{nick}/subscriptions(nick=${auth.nick})}">구독계정리스트</a></li>
+            <li><a href="/b/create">게시글 작성하기</a></li>
+            <!--                <li><a th:href="@{/b/fav}">좋아요한 게시글</a></li>-->
+            <li><a th:href="@{/user/logout}">로그아웃</a></li>
+        </ul>
+    </div>
+</header>
+</html>
