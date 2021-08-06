@@ -320,7 +320,7 @@ function insFav(){
     }).then(res => res.json())
         .then(myJson => {
             if(myJson==1){
-                ICONFAV.classList='fas fa-thumbs-up pointer'
+                ICONFAV.classList='fas fa-heart pointer'
                 iconFavElem.dataset.favcount=parseInt((iconFavElem.dataset.favcount))+1
                 ICONFAV.innerText=iconFavElem.dataset.favcount
                 ICONFAV.removeEventListener('click',insFav)
@@ -337,7 +337,7 @@ function delFav(){
     }).then(res => res.json())
         .then(myJson => {
             if(myJson==1){
-                ICONFAV.classList='far fa-thumbs-up pointer'
+                ICONFAV.classList='far fa-heart pointer'
                 iconFavElem.dataset.favcount=parseInt((iconFavElem.dataset.favcount))-1
                 ICONFAV.innerText=iconFavElem.dataset.favcount
                 ICONFAV.removeEventListener('click',delFav)

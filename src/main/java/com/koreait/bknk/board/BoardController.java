@@ -82,8 +82,8 @@ public class BoardController {
 
     @ResponseBody
     @PostMapping("/insFav")
-    public int insFav(@RequestBody BoardFavEntity param){
-        System.out.println("업데이트"+boardService.updFav(param));
+    public int insFav(@RequestBody BoardFavEntity param, @AuthenticationPrincipal CustomUserPrincipal userDetails){
+        param.setIuser(userDetails.getUser().getIuser());
         int result=boardService.insFav(param);
         boardService.updFav(param);
         return result;
@@ -112,6 +112,7 @@ public class BoardController {
         SearchDAO searchDAO=new SearchDAO();
         searchDAO.setLimit(limit);
         List<BoardDTO> list=boardService.selHotList(searchDAO);
+        System.out.println(list);
         return list;
     }
 
@@ -182,5 +183,14 @@ public class BoardController {
         searchDAO.setSearchType(searchType);
         searchDAO.setLimit(limit);
         return boardService.selFeedPage3(searchDAO);
+    }
+
+    @ResponseBody
+    @RequestMapping("/chFav")
+    public int chFav(@RequestParam("iboard") int iboard, @AuthenticationPrincipal CustomUserPrincipal details){
+        BoardDAO param=new BoardDAO();
+        param.setIboard(iboard);
+        param.setUserIuser(details.getUser().getIuser());
+        return boardService.chFav(param);
     }
 }

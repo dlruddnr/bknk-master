@@ -3,7 +3,7 @@
 <mapper namespace="com.koreait.bknk.board.BoardMapper">
     <!--인기 게시글 리스트 불러오기 9개만-->
     <select id="selHotList" resultType="com.koreait.bknk.board.model.BoardDTO">
-        SELECT A.*, B.nick as writer from t_board A
+        SELECT A.*, B.nick as writer, B.mainProfile from t_board A
         INNER JOIN t_user B
         ON A.iuser=B.iuser
         LEFT JOIN t_board_img C
