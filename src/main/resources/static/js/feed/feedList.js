@@ -12,7 +12,7 @@ const feedListObj={
         // feedContainerElem.innerHTML=`<div id="container1"></div>
         //                              <div id="container2"></div>
         //                              <div id="container3"></div>`
-        fetch(`${feedListObj.url}?limit=${feedListObj.limit}&page=${feedListObj.page}`)
+        fetch(`${feedListObj.url}`)
             .then(res => res.json())
             .then(myJson => {
                 console.log(myJson)

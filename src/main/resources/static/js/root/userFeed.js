@@ -47,7 +47,9 @@ function ajaxCancelSubscription(feedIuser){
 }
 
 // ---경욱---------------------------------------------
-feedListObj.url='/b/myFeedList'
+feedListObj.url=`/b/myFeedList?limit=${feedListObj.limit}&page=${feedListObj.page}`
 feedListObj.type=0
 feedListObj.makeFeedList()
 feedListObj.getFeedPage()
+
+

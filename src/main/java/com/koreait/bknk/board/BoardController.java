@@ -193,4 +193,5 @@ public class BoardController {
         param.setUserIuser(details.getUser().getIuser());
         return boardService.chFav(param);
     }
+
 }
