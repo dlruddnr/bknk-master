@@ -215,7 +215,6 @@ function uploadCmt(){
         iboard:infoSectionElem.dataset.iboard,
         cmt:formCmt.cmt.value
     }
-    console
     if(cmtData.cmt==''){
         alert('댓글을 입력하세요')
         return false
@@ -253,6 +252,7 @@ function modCmt(){
     })
         .then(res => res.json())
         .then(myJson => {
+            console.log("결과"+myJson)
             switch (myJson){
                 case 0:
                     alert('댓글 수정 실패하였습니다.')

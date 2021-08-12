@@ -50,11 +50,13 @@ img{width: 100%;}
 #modCmtContainer{background-color: rgba(0,0,0,0.7);position: absolute; width: 100%; height: 100%; z-index: 100;
                     display: flex; justify-content: center; align-items: center;
                     }
-#modCmtContainer > div{width: 500px; height: 300px; background-color: red; display: flex; flex-direction: column;}
-#modCmtContainer > div > div{width: 100%; height: 60px;}
+#modCmtContainer > div{width: 500px; height: 300px; background-color: #fafafa; display: flex; flex-direction: column; padding: 20px; border-radius:10px;}
+#modCmtContainer > div > div{width: 100%; height: 15%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #c7c7c7; padding: 5px;}
+#modCmtContainer > div > div > i{color: #6d6d6d;}
+#modCmtContainer > div > div > div{font-size: 120%; font-weight: bold;}
 #modCmtContainer > div > form{flex:1; display: flex; flex-direction: column;}
-#modCmtContainer > div > form div > textarea{width: 100%; height: 150px; resize: none; flex: 1 ;}
-#modCmtContainer > div > form div > input{height: 60px; width: 100%;}
+#modCmtContainer > div > form > textarea{width: 100%;resize: none; flex: 1 ; border-radius: 5px; background-color: #eee; border: none;margin-bottom: 10px;}
+#modCmtContainer > div > form div > input{height: 60px; width: 100%; border-radius: 5px; background-color: #cfcfcf; border: none;}
 /*#modCmtContainer > form > textarea{width: 400px; height: 150px; resize: none;}*/
 /*#modCmtContainer > form > div{display: flex; }*/
 /*#modCmtContainer > form > div > input{flex:1;}*/
