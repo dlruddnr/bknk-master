@@ -7,12 +7,13 @@ const feedListObj={
     page:1,
     url:'',
     type:0,
+    region : 0,
     makeFeedList: function(e){
         feedContainerElem.innerHTML=''
         // feedContainerElem.innerHTML=`<div id="container1"></div>
         //                              <div id="container2"></div>
         //                              <div id="container3"></div>`
-        fetch(`${feedListObj.url}`)
+        fetch(`${feedListObj.url}?limit=${feedListObj.limit}&page=${feedListObj.page}&region=${feedListObj.region}`)
             .then(res => res.json())
             .then(myJson => {
                 console.log(myJson)
@@ -36,7 +37,7 @@ const feedListObj={
                     const FAV=document.createElement('div')
                     const ITAG=document.createElement('i')
 
-                    IMGTAG.src=`/pic/post/${item.iboard}/${item.img_addr}`
+                    IMGTAG.src=`/pic/board/${item.iboard}/${item.img_addr}`
                     IMGTAG.onerror=function(){this.src='/img/spring.jpg'}
 
                     TITLE.innerText=item.title
@@ -79,7 +80,8 @@ const feedListObj={
                     ATAG.innerText=i
                     ATAG.addEventListener('click',function(e){
                         feedListObj.page=e.target.innerText
-                        console.log(feedListObj.page)
+                        console.log('페이지'+feedListObj.page)
+                        feedListObj.setOption()
                         feedListObj.makeFeedList()
                     })
                     pagingContainerElem.append(ATAG)
@@ -143,6 +145,9 @@ const feedListObj={
                 i.addEventListener('click',feedListObj.insFav)
             }
         })
+},
+    setOption : function(){
+        feedListObj.url=feedListObj.url
 }
 }
 

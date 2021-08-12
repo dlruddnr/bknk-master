@@ -13,7 +13,7 @@
     </insert>
     <!--게시글 디테일 정보 불러오기-->
     <select id="selDetail" resultType="com.koreait.bknk.board.model.BoardDTO">
-        SELECT A.*, B.img_addr, C.nick AS writer FROM t_board A
+        SELECT A.*, B.img_addr, C.nick AS writer, C.mainProfile FROM t_board A
         INNER JOIN t_user C
         ON A.iuser=C.iuser
         LEFT JOIN t_board_img B
@@ -36,7 +36,7 @@
     </select>
     <!--게시글 댓글 불러오기-->
     <select id="selCmtList" resultType="com.koreait.bknk.board.model.CmtDAO">
-        SELECT A.*, B.nick as writer, B.iuser FROM t_board_cmt A
+        SELECT A.*, B.nick as writer, B.iuser, B.mainProfile FROM t_board_cmt A
         INNER JOIN t_user B
         ON A.iuser=B.iuser
         WHERE iboard=${iboard}

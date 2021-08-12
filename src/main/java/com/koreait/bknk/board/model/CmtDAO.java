@@ -10,4 +10,5 @@ import lombok.ToString;
 public class CmtDAO extends CmtEntity{
     private int iboard;
     private String writer;
+    private String mainProfile;
 }

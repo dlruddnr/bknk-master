@@ -8,12 +8,12 @@ const feedListObj={
     limit:9,
     page:1,
     url:'',
-    makeFeedList: function(e){
+    makeFeedList: function(){
         feedContainerElem.innerHTML=''
             // `<div id="container1"></div>
             //                          <div id="container2"></div>
             //                          <div id="container3"></div>`
-        fetch(`${feedListObj.url}`)
+        fetch(`${feedListObj.url}?limit=${feedListObj.limit}&searchType=${feedListObj.searchType}&searchWord=${feedListObj.searchWord}&page=${feedListObj.page}`)
             .then(res => res.json())
             .then(myJson => {
                 console.log(myJson)
@@ -71,7 +71,7 @@ const feedListObj={
             })
     },
     getFeedPage : function (){
-        fetch(`/b/searchPage?limit=${feedListObj.limit}&searchType=${feedListObj.searchType}&searchWord=${feedListObj.searchWord}`)
+        fetch(`/b/searchPage?searchType=${feedListObj.searchType}&searchWord=${feedListObj.searchWord}&limit=${feedListObj.limit}&page=${feedListObj.page}`)
             .then(res => res.json())
             .then(myJson => {
 
@@ -81,6 +81,7 @@ const feedListObj={
                     ATAG.addEventListener('click',function(e){
                         feedListObj.page=e.target.innerText
                         console.log(feedListObj.page)
+                        console.log(feedListObj.url)
                         feedListObj.makeFeedList()
                     })
                     pagingContainerElem.append(ATAG)
@@ -148,7 +149,7 @@ const feedListObj={
 }
 
 
-feedListObj.url=`/b/myFeedList?searchType=${feedListObj.searchType}&searchWord=${feedListObj.searchWord}&limit=${feedListObj.limit}&page=${feedListObj.page}`
+feedListObj.url=`/b/feedlist`
 feedListObj.searchType=searchDataElem.dataset.searchType
 feedListObj.searchWord=searchDataElem.dataset.searchWord
 feedListObj.getFeedPage()

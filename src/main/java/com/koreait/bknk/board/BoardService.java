@@ -71,7 +71,7 @@ public class BoardService {
     //Feed 부분
     public List<BoardDTO> selHotList(SearchDAO param) { return boardMapper.selHotList(param);}
     public List<BoardDTO> selLikeFeedList(BoardDAO param) { return boardMapper.selFavList(param);}
-    public List<BoardDTO> selMyFeedList1(BoardDAO param){
+    public List<BoardDTO> selMyFeedList(BoardDAO param){
         return boardMapper.selMyFeedList(param);
     }
 

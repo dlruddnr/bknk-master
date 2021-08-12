@@ -108,6 +108,7 @@ input[type="submit"]:disabled{
 .red { padding: 10px 0 0 3px; color: red; font-weight: bolder; font-size: 14px;}
 
 /*경욱이 변경한것 */
+.fa-heart{color: red;}
 @font-face {
     font-family: "lkw";
     src: url("./static/font/logo.ttf");

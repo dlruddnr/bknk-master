@@ -2,6 +2,7 @@ var globalConstElem=document.querySelector('#globalConst')
 var mapModalElement=document.querySelector('#map_modal')
 var infoSectionElem=document.querySelector('#infoSection')
 var modCmtModalElem=document.modCmtForm
+var modCmtContainerElem=document.querySelector('#modCmtContainer')
 
 //모달창 띄우는 함수
 function delClassHide(){
@@ -17,6 +18,9 @@ function delClassHide(){
     locationPoint(placeLatLng,map)
 }
 
+function delClassHide2(){
+    modCmtContainerElem.classList='hide'
+}
 //모달창 숨기기 함수
 function onClassHide(){
     mapModalElement.classList='hide'
@@ -111,7 +115,7 @@ function displayCenterInfo(result, status) {
         for(var i = 0; i < result.length; i++) {
             // 행정동의 region_type 값은 'H' 이므로
             if (result[i].region_type === 'H') {
-                infoDiv.innerHTML = result[i].address_name;
+                // infoDiv.innerHTML = result[i].address_name;
                 break;
             }
         }
@@ -159,28 +163,15 @@ function makeComList(){
         .then(res => res.json())
         .then(myJson => {
 
-            const TABLETAG=document.createElement('table')
-            const TRTAG=document.createElement('tr')
-            const THTAG1=document.createElement('th')
-            const THTAG2=document.createElement('th')
-            const THTAG3=document.createElement('th')
-            const THTAG4=document.createElement('th')
-
-            THTAG1.innerText='작성자'
-            THTAG2.innerText='댓글내용'
-            THTAG3.innerText='작성일'
-            TRTAG.append(THTAG1)
-            TRTAG.append(THTAG2)
-            TRTAG.append(THTAG3)
-            TRTAG.append(THTAG4)
-            TABLETAG.append(TRTAG)
-
             myJson.forEach(function(currentValue){
-                const CMTTR=document.createElement('tr')
-                const CMTTD1=document.createElement('td')
-                const CMTTD2=document.createElement('td')
-                const CMTTD3=document.createElement('td')
-                const CMTTD4=document.createElement('td')
+                const DIVTAG=document.createElement('div')
+                const PROFILEIMG=document.createElement('img')
+                const DIVTAGWRITER1=document.createElement('div')
+                const DIVTAGWRITER2=document.createElement('div')
+                const CMTTDCMT=document.createElement('div')
+                const CMTTDTIME=document.createElement('div')
+                const CMTTDMOD=document.createElement('div')
+                // const CMTTD4=document.createElement('td')
 
                 if(iuser==currentValue.iuser){
                     const ICONTAG=document.createElement('i')
@@ -191,39 +182,40 @@ function makeComList(){
                     ICONTAG2.classList='fas fa-pencil-alt'
                     ICONTAG2.dataset.icmt=currentValue.icmt
                     ICONTAG2.addEventListener('click', function (e){
-                        modCmtModalElem.classList=''
+                        modCmtContainerElem.classList=''
                         console.log(e.target.parentNode.previousSibling.previousSibling.innerText)
-                        modCmtModalElem.cmt.value=e.target.parentNode.previousSibling.previousSibling.innerText
+                        modCmtModalElem.cmt.value=e.target.parentNode.previousSibling.innerText
                         modCmtModalElem.icmt.value=e.target.dataset.icmt
                     })
-                    CMTTD4.append(ICONTAG)
-                    CMTTD4.append(ICONTAG2)
+                    CMTTDMOD.append(ICONTAG)
+                    CMTTDMOD.append(ICONTAG2)
                 }
+                PROFILEIMG.src=`/pic/user/${currentValue.iuser}/${currentValue.mainProfile}`
+                DIVTAGWRITER1.append(PROFILEIMG)
+                DIVTAGWRITER1.append(DIVTAGWRITER2)
 
-                CMTTD1.innerText=currentValue.writer
-                CMTTD2.innerText=currentValue.cmt
-                CMTTD3.innerText=currentValue.regdt
+                DIVTAGWRITER2.innerText=currentValue.writer
+                CMTTDCMT.innerText=currentValue.cmt
+                CMTTDTIME.innerText=getDateTimeInfo(currentValue.regdt)
 
-                CMTTR.append(CMTTD1)
-                CMTTR.append(CMTTD2)
-                CMTTR.append(CMTTD3)
-                CMTTR.append(CMTTD4)
-
-                TABLETAG.append(CMTTR)
+                CMTTDCMT.append(CMTTDTIME)
+                DIVTAG.append(DIVTAGWRITER1)
+                DIVTAG.append(CMTTDCMT)
+                DIVTAG.append(CMTTDMOD)
+                CMTCONTAINER.append(DIVTAG)
             })
 
-            CMTCONTAINER.append(TABLETAG)
+
         })
 }
 
 //댓글 업로드
 function uploadCmt(){
     var cmtData={
-        iuser:infoSectionElem.dataset.iuser,
         iboard:infoSectionElem.dataset.iboard,
         cmt:formCmt.cmt.value
     }
-
+    console
     if(cmtData.cmt==''){
         alert('댓글을 입력하세요')
         return false
@@ -271,7 +263,7 @@ function modCmt(){
                     break
             }
         })
-    modCmtModalElem.classList='hide'
+    modCmtContainerElem.classList='hide'
     return false
 }
 
@@ -282,7 +274,7 @@ function delCmt(){
         fetch('/b/delCmt',{
             method: 'POST',
             headers:{'Content-Type':'application/json; charset=utf-8'},
-            body: JSON.stringify({icmt:icmt, iuser:iuser})
+            body: JSON.stringify({icmt:icmt})
         }).then(res => res.json())
             .then(myJson =>{
                 console.log(myJson)
@@ -303,10 +295,10 @@ function delCmt(){
 var iconFavElem=document.querySelector('#thumbs-up')
 const ICONFAV=document.createElement('i')
 if(iconFavElem.dataset.myfav==0){
-    ICONFAV.classList='far fa-thumbs-up pointer'
+    ICONFAV.classList='far fa-heart pointer'
     ICONFAV.addEventListener('click',insFav)
 }else{
-    ICONFAV.classList='fas fa-thumbs-up pointer'
+    ICONFAV.classList='fas fa-heart pointer'
     ICONFAV.addEventListener('click',delFav)
 }
 ICONFAV.innerText=iconFavElem.dataset.favcount
@@ -316,7 +308,7 @@ function insFav(){
     fetch('/b/insFav',{
         method:'POST',
         headers:{'Content-Type':'application/json; charset=utf-8'},
-        body:JSON.stringify({iuser:iuser, iboard:iboard})
+        body:JSON.stringify({iboard:iboard})
     }).then(res => res.json())
         .then(myJson => {
             if(myJson==1){
@@ -346,6 +338,32 @@ function delFav(){
         })
 }
 
+//----------------------------------------------------------------------------------------------
+const fa_ellipsis_h_Elem=document.querySelector('.fa-ellipsis-h')
+fa_ellipsis_h_Elem.addEventListener('click',function (){
 
+})
+
+
+
+function getDateTimeInfo(dt) {
+    const nowDt = new Date();
+    const targetDt = new Date(dt);
+
+    const nowDtSec = parseInt(nowDt.getTime() / 1000);
+    const targetDtSec = parseInt(targetDt.getTime() / 1000);
+
+    const diffSec = nowDtSec - targetDtSec;
+    if(diffSec < 120) {
+        return '1분 전';
+    } else if(diffSec < 3600) { //분 단위
+        return `${parseInt(diffSec / 60)}분 전`;
+    } else if(diffSec < 86400) { //시간 단위
+        return `${parseInt(diffSec / 3600)}시간 전`;
+    } else if(diffSec < 604800) { //일 단위
+        return `${parseInt(diffSec / 86400)}일 전`;
+    }
+    return targetDt.toLocaleString();
+}
 //<i className="fas fa-thumbs-up"></i> 채워진거
 //<i className="far fa-thumbs-up"></i>    안채워진거

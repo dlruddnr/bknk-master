@@ -59,7 +59,8 @@ public class BoardController {
 
     @ResponseBody
     @PostMapping("/cmtUpload")
-    public int cmtUpload(@RequestBody CmtDAO param){
+    public int cmtUpload(@RequestBody CmtDAO param, @AuthenticationPrincipal CustomUserPrincipal userDetails){
+        param.setIuser(userDetails.getUser().getIuser());
         int result=boardService.insCmt(param);
         return result;
     }
@@ -76,7 +77,8 @@ public class BoardController {
 
     @ResponseBody
     @PostMapping("/delCmt")
-    public int cmtDel(@RequestBody CmtDAO param){
+    public int cmtDel(@RequestBody CmtDAO param, @AuthenticationPrincipal CustomUserPrincipal userDetails){
+        param.setIuser(userDetails.getUser().getIuser());
         return boardService.delCmt(param);
     }
 
@@ -137,7 +139,7 @@ public class BoardController {
         BoardDAO boardDAO=new BoardDAO();
         boardDAO.setIuser(userDetails.getUser().getIuser());
         boardDAO.setStartPage((page-1)*limit);
-        List<BoardDTO> list=boardService.selMyFeedList1(boardDAO);
+        List<BoardDTO> list=boardService.selMyFeedList(boardDAO);
         return list;
     }
 

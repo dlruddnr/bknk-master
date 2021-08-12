@@ -29,7 +29,7 @@
     <!--내 feed 리스트 불러오기-->
     <select id="selMyFeedList" resultType="com.koreait.bknk.board.model.BoardDTO">
         SELECT *
-        FROM (SELECT A.*, B.nick as writer, C.img_addr FROM t_board A
+        FROM (SELECT A.*, B.nick as writer, C.img_addr, B.mainProfile FROM t_board A
         INNER JOIN t_user B
         ON A.iuser=B.iuser
         LEFT JOIN t_board_img C
@@ -70,7 +70,7 @@
     </select>
     <!--검색 후 결과 가져오기-->
     <select id="selSearchResult" resultType="com.koreait.bknk.board.model.BoardDTO">
-        SELECT A.iboard, A.iuser, A.title, A.place, A.cntFav, B.nick AS writer, C.img_addr
+        SELECT A.iboard, A.iuser, A.title, A.place, A.cntFav, B.nick AS writer, C.img_addr, B.mainProfile
         FROM t_board A
         INNER JOIN t_user B
         ON A.iuser=B.iuser
