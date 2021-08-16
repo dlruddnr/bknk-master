@@ -1,4 +1,4 @@
-var multipleContainer = document.getElementById("multipleContainer")
+var multipleContainer = document.getElementsByClassName("swiper-wrapper")[0]
 var inputMultipleImage = document.getElementById("input-multipleIMG")
 inputMultipleImage.addEventListener("change", e => {
     readMultipleImage(e.target)
@@ -14,22 +14,53 @@ function readMultipleImage(input) {
         console.log(input.files)
         // 유사배열을 배열로 변환 (forEach문으로 처리하기 위해)
         var fileArr = Array.from(input.files)
-        var Div1 = document.createElement("div")
-
-        Div1.classList.add("column")
-
+        // var Div1 = document.createElement("div")
+        // Div1.classList='swiper-slide'
         fileArr.forEach((file, index) => {
+            const DIVTAG=document.createElement('div')
             const reader = new FileReader()
             const imgTag = document.createElement("img")
-            imgTag.classList.add("image")
-            Div1.appendChild(imgTag)
+            DIVTAG.append(imgTag)
+            DIVTAG.classList='swiper-slide'
             reader.onload = e => {
                 imgTag.src = e.target.result
             }
             reader.readAsDataURL(file)
+            console.log(reader.onload)
+            multipleContainer.append(DIVTAG)
         })
-
-        multipleContainer.appendChild(Div1)
+        var swiper = new Swiper(".mySwiper", {
+            effect: "coverflow",
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: "auto",
+            coverflowEffect: {
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+            },
+        });
+        //
+        // var swiper_container=document.getElementsByClassName('swiper-container')
+        // swiper_container.style.width='100%'
+        // swiper_container.style.paddingTop='50px'
+        // swiper_container.style.paddingBottom='50px'
+        //
+        // var swiper_slide=document.getElementsByClassName('swiper-slide')
+        // swiper_slide.style.backgroundPosition='center'
+        // swiper_slide.style.backgroundSize='cover'
+        // swiper_slide.style.width='300px'
+        // swiper_slide.style.height='300px'
+        //
+        // for(var i=0; i<swiper_slide.length; i++){
+        //     swiper_slide[i].firstChild.style.display='block'
+        //     swiper_slide[i].firstChild.style.width='100%'
+        // }
     }
 }
 
@@ -304,4 +335,5 @@ function aaaa(){
     return false
 }
 //지도 마지막에 hide주기 에러문제로
-mapModal.className='hide'
+mapModal.classList='hide'
+

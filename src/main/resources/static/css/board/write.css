@@ -1,3 +1,4 @@
+/*지도 부분*/
 html,body{margin: 0; padding: 0; width: 100%;height: 100%}
 .hide{display: none;}
 .openModal{display: flex;}
@@ -44,3 +45,19 @@ html,body{margin: 0; padding: 0; width: 100%;height: 100%}
 #pagination {margin:10px auto;text-align: center;}
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
+
+/*-------------------------------------------*/
+#writeContainer{background-color: red;}
+#writeForm > div{display: flex; justify-content: space-between;}
+#writeForm > div:nth-child(1){display: flex;}
+#writeForm > div:nth-child(2){display: flex;}
+#writeForm > div:nth-child(3){display: flex;}
+#writeForm > div:nth-child(1){display: flex;}
+#writeForm > div:nth-child(1){display: flex;}
+#writeForm > div:nth-child(1){display: flex;}
+#writeForm > div:nth-child(1){display: flex;}
+#writeForm > div:nth-child(1){display: flex;}
+#writeForm > div:nth-child(1){display: flex;}
+
+.textWindow{flex:1;}
+

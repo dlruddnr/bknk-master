@@ -31,11 +31,17 @@ public class BoardService {
             String saveFileNm= myFileUtils.transferTo(img,"board/"+param.getIboard());
             postImg.setImg_addr(saveFileNm);
             if(saveFileNm!=null){
-                return boardMapper.insBoardImg(postImg);
+                boardMapper.insBoardImg(postImg);
             }
         }
-        return 0;
+        return 1;
     }
+
+    public int delBoard(BoardDAO param){
+        boardMapper.delBoard(param);
+        boardMapper.delBoard2(param);
+        boardMapper.delBoard3(param);
+        return boardMapper.delBoard4(param);}
 
     public int updFav(BoardFavEntity param){ return boardMapper.updFav(param);}
 
@@ -70,9 +76,9 @@ public class BoardService {
 
     //Feed 부분
     public List<BoardDTO> selHotList(SearchDAO param) { return boardMapper.selHotList(param);}
-    public List<BoardDTO> selLikeFeedList(BoardDAO param) { return boardMapper.selFavList(param);}
-    public List<BoardDTO> selMyFeedList(BoardDAO param){
-        return boardMapper.selMyFeedList(param);
+    public List<BoardDTO> selFavFeedList(BoardDAO param) { return boardMapper.selFavList(param);}
+    public List<BoardDTO> selUserFeedList(BoardDAO param){
+        return boardMapper.selUserFeedList(param);
     }
 
     public int selFeedPage1(BoardDAO param){

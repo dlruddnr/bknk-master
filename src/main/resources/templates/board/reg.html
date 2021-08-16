@@ -36,12 +36,20 @@
         <div id=detail_right>
             <div id="detail_head" class="detail_section">
                 <span id="infoSection" th:data-iboard="${result[0].iboard}"></span>
-<!--                <div>만약 작성자가 들어오면 수정버튼 생성하자</div>-->
-                <div>
-                    <img th:src="@{/pic/user/{iuser}/{mainProfile}(iuser=${result[0].iuser},mainProfile=${result[0].mainProfile})}">
+                <a th:href="@{/{writer}/(writer=${result[0].writer})}">
+                    <img class="wh30 profile" th:src="@{/pic/user/{iuser}/{mainProfile}(iuser=${result[0].iuser},mainProfile=${result[0].mainProfile})}">
                     <div th:text="${result[0].writer}"></div>
+                </a>
+                <div>
+                <i th:if="${result[0].iuser} eq ${#authentication.getPrincipal().getUser().iuser}" class="fas fa-ellipsis-h" onclick="">
+                    <div id="menuModal">
+                        <ul>
+                            <li>수정</li>
+                            <li onclick="delboard()">삭제</li>
+                        </ul>
+                    </div>
+                </i>
                 </div>
-                <i class="fas fa-ellipsis-h" onclick=""></i>
         <!--        <div th:text="계절 + ${result[0].season}"></div>-->
             </div>
             <div th:text="${result[0].ctnt}"></div>

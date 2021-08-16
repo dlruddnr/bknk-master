@@ -3,6 +3,7 @@ const pagingContainerElem=document.querySelector('#pagingContainer')
 const globalConstElem=document.querySelector('#globalConst')
 var iuser=globalConstElem.dataset.iuser
 const feedListObj={
+    iuser:0,
     limit:9,
     page:1,
     url:'',
@@ -13,7 +14,7 @@ const feedListObj={
         // feedContainerElem.innerHTML=`<div id="container1"></div>
         //                              <div id="container2"></div>
         //                              <div id="container3"></div>`
-        fetch(`${feedListObj.url}?limit=${feedListObj.limit}&page=${feedListObj.page}&region=${feedListObj.region}`)
+        fetch(`${feedListObj.url}?limit=${feedListObj.limit}&page=${feedListObj.page}&region=${feedListObj.region}&iuser=${feedListObj.iuser}`)
             .then(res => res.json())
             .then(myJson => {
                 console.log(myJson)
@@ -45,10 +46,10 @@ const feedListObj={
 
                     FAV.classList='favDiv'
                     console.log(item.mainProfile)
-                    FAV.innerHTML=`<div>
-                                    <img src="/pic/user/${item.iuser}/${item.mainProfile}" onerror="this.src='/img/profile.png'">
+                    FAV.innerHTML=`<a href="/${item.writer}/">
+                                    <img class="wh30 profile" src="/pic/user/${item.iuser}/${item.mainProfile}" onerror="this.src='/img/profile.png'">
                                     <div>${item.writer}</div>
-                                    </div>`
+                                    </a>`
                     FAV.append(ITAG)
                     // FAV.append(item.cntFav)
 

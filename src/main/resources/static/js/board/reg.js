@@ -166,7 +166,7 @@ function makeComList(){
             myJson.forEach(function(currentValue){
                 const DIVTAG=document.createElement('div')
                 const PROFILEIMG=document.createElement('img')
-                const DIVTAGWRITER1=document.createElement('div')
+                const ATAGWRITER1=document.createElement('a')
                 const DIVTAGWRITER2=document.createElement('div')
                 const CMTTDCMT=document.createElement('div')
                 const CMTTDTIME=document.createElement('div')
@@ -183,23 +183,25 @@ function makeComList(){
                     ICONTAG2.dataset.icmt=currentValue.icmt
                     ICONTAG2.addEventListener('click', function (e){
                         modCmtContainerElem.classList=''
-                        console.log(e.target.parentNode.previousSibling.previousSibling.innerText)
-                        modCmtModalElem.cmt.value=e.target.parentNode.previousSibling.innerText
+                        console.log(e.target.parentNode.previousSibling.firstChild.innerText)
+                        modCmtModalElem.cmt.value=e.target.parentNode.previousSibling.firstChild.innerText
                         modCmtModalElem.icmt.value=e.target.dataset.icmt
                     })
                     CMTTDMOD.append(ICONTAG)
                     CMTTDMOD.append(ICONTAG2)
                 }
                 PROFILEIMG.src=`/pic/user/${currentValue.iuser}/${currentValue.mainProfile}`
-                DIVTAGWRITER1.append(PROFILEIMG)
-                DIVTAGWRITER1.append(DIVTAGWRITER2)
+                PROFILEIMG.classList='wh30 profile'
+                ATAGWRITER1.append(PROFILEIMG)
+                ATAGWRITER1.append(DIVTAGWRITER2)
+                ATAGWRITER1.href='/'+currentValue.writer+'/'
 
                 DIVTAGWRITER2.innerText=currentValue.writer
-                CMTTDCMT.innerText=currentValue.cmt
+                CMTTDCMT.innerHTML=`<div>${currentValue.cmt}</div>`
                 CMTTDTIME.innerText=getDateTimeInfo(currentValue.regdt)
 
                 CMTTDCMT.append(CMTTDTIME)
-                DIVTAG.append(DIVTAGWRITER1)
+                DIVTAG.append(ATAGWRITER1)
                 DIVTAG.append(CMTTDCMT)
                 DIVTAG.append(CMTTDMOD)
                 CMTCONTAINER.append(DIVTAG)
@@ -365,5 +367,27 @@ function getDateTimeInfo(dt) {
     }
     return targetDt.toLocaleString();
 }
+
+function openMenuModal(){
+    var modal=document.querySelector('#menuModal')
+    modal.classList='flex'
+}
 //<i className="fas fa-thumbs-up"></i> 채워진거
 //<i className="far fa-thumbs-up"></i>    안채워진거
+
+function delboard(){
+    console.log('asdasd')
+    var writer=globalConstElem.dataset.writer
+    fetch('/b/delBoard?iboard='+iboard)
+        .then(res=>res.json())
+        .then(myJson => {
+            switch (myJson) {
+                case 0:
+                    alert('삭제 실패하였습니다')
+                    break;
+                case 1:
+                    alert('삭제되었습니다')
+                    history.back()
+            }
+        })
+}

@@ -46,10 +46,10 @@ const feedListObj={
 
                     FAV.classList='favDiv'
                     console.log(item.mainProfile)
-                    FAV.innerHTML=`<div>
-                                    <img src="/pic/user/${item.iuser}/${item.mainProfile}" onerror="this.src='/img/profile.png'">
+                    FAV.innerHTML=`<a href="/${item.writer}/">
+                                    <img class="wh30 profile" src="/pic/user/${item.iuser}/${item.mainProfile}" onerror="this.src='/img/profile.png'">
                                     <div>${item.writer}</div>
-                                    </div>`
+                                    </a>`
                     FAV.append(ITAG)
                     // FAV.append(item.cntFav)
 

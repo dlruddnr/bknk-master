@@ -1,10 +1,7 @@
-/*img{width: 100px; height: 100px;}*/
-/*!*#feedContainer{display: flex; flex-direction: row;}*!*/
-
 #feedContainer a span > img{width: 100%;}
 .favDiv{display: flex; justify-content: space-between; align-items: center; margin: 0 20px;}
-.favDiv > div{display: flex;}
-.favDiv > div >img{width: 30px; border-radius: 50%   }
+.favDiv > a{display: flex;}
+.favDiv > a >img{width: 30px; border-radius: 50%   }
 .favDiv > i{font-size: 30px; color: red;}
 #feedContainer{display: grid; grid-template-columns: repeat(3, minmax(auto,auto)); gap: 30px 65px;}
 #feedContainer > div{box-shadow: 8px 8px 8px -4px #dfe6e9;}

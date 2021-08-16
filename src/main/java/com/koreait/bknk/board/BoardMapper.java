@@ -12,6 +12,10 @@ public interface BoardMapper {
     int insBoardImg(BoardImgDAO param);
     int updFav(BoardFavEntity param);
     int chFav(BoardDAO param);
+    int delBoard(BoardDAO param);
+    int delBoard2(BoardDAO param);
+    int delBoard3(BoardDAO param);
+    int delBoard4(BoardDAO param);
 
     //  댓글
     List<CmtDAO> selCmtList(int iboard);
@@ -26,7 +30,7 @@ public interface BoardMapper {
     //Feed부분
     List<BoardDTO> selHotList(SearchDAO param);
     List<BoardDTO> selFavList(BoardDAO param);
-    List<BoardDTO> selMyFeedList(BoardDAO param);
+    List<BoardDTO> selUserFeedList(BoardDAO param);
 
     int selFeedPage1(BoardDAO param);
     int selFeedPage2(BoardDAO param);

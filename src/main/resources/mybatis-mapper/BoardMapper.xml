@@ -6,6 +6,26 @@
         insert into t_board(iuser, title, ctnt, region, place, location_Y, location_X, cntFav, season)
         values(${iuser}, #{title}, #{ctnt}, ${region}, #{place}, #{location_Y}, #{location_X}, ${cntFav}, ${season})
     </insert>
+<!--게시글 삭제-->
+    <delete id="delBoard">
+        DELETE A from t_board_cmt A
+        inner join t_board B on A.iboard=B.iboard
+        WHERE A.iboard=${iboard} and B.iuser=${iuser}
+    </delete>
+    <delete id="delBoard2">
+        DELETE A from t_board_img A
+        inner join t_board B on A.iboard=B.iboard
+        WHERE A.iboard=${iboard} and B.iuser=${iuser}
+    </delete>
+    <delete id="delBoard3">
+        DELETE A from t_board_fav A
+        inner join t_board B on A.iboard=B.iboard
+        WHERE A.iboard=${iboard} and B.iuser=${iuser}
+    </delete>
+    <delete id="delBoard4">
+        DELETE from t_board
+        WHERE iboard=${iboard} and iuser=${iuser}
+    </delete>
     <!--게시글 이미지 저장부분-->
     <insert id="insBoardImg">
         insert into t_board_img(iboard, img_addr)

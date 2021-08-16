@@ -51,6 +51,15 @@ public class BoardController {
     }
 
     @ResponseBody
+    @GetMapping("/delBoard")
+    public int delBoard(@RequestParam("iboard") int iboard, @AuthenticationPrincipal CustomUserPrincipal userDetails){
+        BoardDAO boardDAO=new BoardDAO();
+        boardDAO.setIboard(iboard);
+        boardDAO.setIuser(userDetails.getUser().getIuser());
+        return boardService.delBoard(boardDAO);
+    }
+
+    @ResponseBody
     @GetMapping("/cmtLoad")
     public List<CmtDAO> cmtList(@RequestParam("iboard") int iboard){
         List<CmtDAO> cmtList=boardService.selCmtList(iboard);
@@ -129,17 +138,18 @@ public class BoardController {
         BoardDAO boardDAO=new BoardDAO();
         boardDAO.setIuser(userDetails.getUser().getIuser());
         boardDAO.setStartPage((page-1)*limit);
-        List<BoardDTO> list=boardService.selLikeFeedList(boardDAO);
+        List<BoardDTO> list=boardService.selFavFeedList(boardDAO);
+        System.out.println(list.get(0).getMainProfile());
         return list;
     }
 
     @ResponseBody
-    @RequestMapping("/myFeedList")
-    public List<BoardDTO> feedList(@RequestParam("limit") int limit,@RequestParam("page") int page, @AuthenticationPrincipal CustomUserPrincipal userDetails){
+    @RequestMapping("/userFeedList")
+    public List<BoardDTO> feedList(@RequestParam("limit") int limit,@RequestParam("page") int page, @RequestParam("iuser") int iuser){
         BoardDAO boardDAO=new BoardDAO();
-        boardDAO.setIuser(userDetails.getUser().getIuser());
+        boardDAO.setIuser(iuser);
         boardDAO.setStartPage((page-1)*limit);
-        List<BoardDTO> list=boardService.selMyFeedList(boardDAO);
+        List<BoardDTO> list=boardService.selUserFeedList(boardDAO);
         return list;
     }
 
